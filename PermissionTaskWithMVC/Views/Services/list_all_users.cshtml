@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "list_all_users";
+}
+<div class="text-center">
+<h1 style="color:blueviolet">List Of All the Users</h1>
+
+@{
+    <table cellspacing="0" cellpadding="15" style="margin:50px auto; font-size:20px; background-color:lightcyan">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Password</th>
+        </tr>
+        @{ foreach (var item in ViewBag.userList)
+            {
+                <tr>
+                    <td>@item.id</td>
+                    <td>@item.first_name</td>
+                    <td>@item.last_name</td>
+                    <td>@item.age</td>
+                    <td>@item.gender</td>
+                    <td>@item.phone_no</td>
+                    <td>@item.email</td>
+                    <td>@item.role</td>
+                    <td>@item.password</td>
+                </tr>
+            }
+        }
+    </table>
+}
+
+</div>

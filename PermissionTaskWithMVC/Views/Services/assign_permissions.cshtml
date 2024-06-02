@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "assign_permissions";
+}
+<body>
+    <div class="container">
+        <h1 style="color:blueviolet" class="text-center">Assign Permissions</h1>
+        <br /><br />
+        <form>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <select name="option" id="option" class="form-control" onchange="getOptions()">
+                        <option selected disabled>-Select Option-</option>
+                        <option value="role">By Role</option>
+                        <option value="user">By User</option>
+                    </select>
+                </div>
+                <div class="col"></div>
+            </div>
+            <br />
+            <div class="row" id="display" style="display:none"></div>
+        </form>
+    </div>
+</body>
+
+<script>
+    async function getOptions() {
+        let option = document.getElementById("option").value;
+        if(option == 'role') {
+            await document.getElementById("display").innerHTML = `
+                <div class="row">
+                    <form>
+                    <div class="col">
+                        <select name="idView" id="idView"></select>
+                    </col>
+                    <div class="col">
+                        <select name="permissionView" id="permissionView"></select>
+                    </col>
+                    </form>
+                </div>
+            `;
+        }
+        else {
+            await document.getElementById("display").innerHTML = `
+                <div class="row">
+                    <form>
+                    <div class="col">
+                        <select name="roleView" id="roleView"></select>
+                    </col>
+                    <div class="col">
+                        <select name="permissionView" id="permissionView"></select>
+                    </col>
+                    </form>
+                </div>
+            `;
+        }
+        
+    }
+</script>

@@ -1,0 +1,133 @@
+﻿@model PermissionTaskWithMVC.Models.UserViewModel;
+
+@{
+    ViewData["Title"] = "edit_user_details";
+}
+<body onload="fillData()">
+<div class="container">
+    <h1 style="text-align:center; color:blueviolet">Enter ID of the User</h1>
+    <br />
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 text-center"> 
+            <form asp-action="edit_user_details" asp-controller="Services" method="post">
+                <input type="number" name="id" value="@{if(ViewBag.id != 0) {@ViewBag.id}}" />
+                <input type="submit" value="SEARCH" class="btn btn-outline-primary" />
+            </form>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <br />
+    @{
+        if (ViewBag.id != 0)
+        {
+            <form>
+                <div class="row">
+                    <div class="col">
+                        <input asp-for="id" id="id" hidden />
+                        <label asp-for="first_name">Name</label>
+                        <input asp-for="first_name" id="name" placeholder="Enter Name" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label asp-for="last_name">Surname</label>
+                        <input asp-for="last_name" id="surname" placeholder="Enter Surname" class="form-control" />
+                    </div>
+                    <div class="col">
+                                    
+                        <label asp-for="age">Age</label>
+                        <input asp-for="age" id="age" placeholder="Enter Age" class="form-control" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" asp-for="gender" value="Male" />
+                            <label class="form-check-label" asp-for="gender">
+                                Male
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" asp-for="gender" value="Female" />
+                            <label class="form-check-label" asp-for="gender">
+                                Female
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                                    
+                        <label asp-for="phone_no">Contact Number</label>
+                        <input asp-for="phone_no" id="no" placeholder="Enter Contact No." class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label asp-for="email">E-mail</label>
+                        <input asp-for="email" id="email" placeholder="Enter E-mail" class="form-control" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-4">
+                        <label asp-for="role">Role</label>
+                        <select asp-for="role" id="role" class="form-control">
+                            <option selected disabled>-Select-</option>
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="password">Password</label>
+                        <input asp-for="password" id="pass" placeholder="Enter Password" class="form-control" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col text-center">
+                        <input type="button" value="SUBMIT" onclick="submitForm()" class="btn btn-outline-primary" />
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        }
+    }
+
+</div>
+</body>
+<script>
+    async function fillData() {
+        if (@ViewBag.id != 0) {
+            let response = await fetch("https://localhost:7110/api/User/"+@ViewBag.id);
+            let data = await response.json();
+            document.getElementById("name").value = data.first_name;
+            document.getElementById("surname").value = data.last_name;
+            document.getElementById("age").value = data.age;
+            document.getElementById("no").value = data.phone_no;
+            document.getElementById("email").value = data.email;
+            document.getElementById("role").value = data.role;
+            document.getElementById("pass").value = data.password
+            let genderEle = document.getElementsByName("gender");
+            for (let i = 0; i < genderEle.length; i++) {
+                if (genderEle[i].value == data.gender) {
+                    genderEle[i].checked = true;
+                }
+            }
+        }
+    }
+
+    async function submitForm() {
+        let response = await fetch("https://localhost:7110/api/User/" + document.getElementById("id").value + "?first_name=" + document.getElementById("name").value + "&last_name=" + document.getElementById("surname").value + "&age=" + document.getElementById("age").value + "&gender=" + document.getElementById("gender").value + "&phone_no=" + document.getElementById("no").value + "&email=" + document.getElementById("email").value + "&role=" + document.getElementById("role").value + "&password=" + document.getElementById("pass").value, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if(response.ok) {
+            alert("Data Updated Successfully!");
+        }
+        else {
+            alert("OPPS, Something Went Wrong!");
+        }
+        window.location.href = window.location.origin;
+    }
+</script>
