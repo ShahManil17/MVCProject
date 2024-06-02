@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "list personal details";
+}
+<div class="text-center">
+    <h1 style="color:blueviolet">Enter ID of the User</h1>
+    <br />
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <form asp-action="list_personal_details" asp-controller="Services" method="post">
+                <input type="number" name="id" value="@{
+                    if(ViewBag.userList != null) {
+                        @ViewBag.userList.id
+                    }
+                }" />
+                <input type="submit" value="SEARCH" class="btn btn-outline-primary"/>
+            </form>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <br /><br />
+    @{
+        if (ViewBag.userList != null)
+        {
+            <table cellspacing="0" cellpadding="15" style="margin:50px auto; font-size:20px; background-color:lightcyan">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Contact Number</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Password</th>
+                </tr>
+                <tr>
+                    <td>@ViewBag.userList.id</td>
+                    <td>@ViewBag.userList.first_name</td>
+                    <td>@ViewBag.userList.last_name</td>
+                    <td>@ViewBag.userList.age</td>
+                    <td>@ViewBag.userList.gender</td>
+                    <td>@ViewBag.userList.phone_no</td>
+                    <td>@ViewBag.userList.email</td>
+                    <td>@ViewBag.userList.role</td>
+                    <td>@ViewBag.userList.password</td>
+                </tr>
+            </table>
+        }
+    }
+</div>

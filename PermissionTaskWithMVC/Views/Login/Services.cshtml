@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "Services";
+}
+
+<h1 style="text-align:center; color:blueviolet">Please Click On the Service You Want</h1>
+<br />
+<br />
+<div class="container">
+    @{
+        <div class="row">
+            @{
+                int i = 0;
+                for (int j=i*3; j<j+3 && j<ViewBag.permissions.Count; j++)
+                {
+                    <div class="col-md-4" style="text-align:center">
+                        @{
+                            if (@ViewBag.permissions[j] == "list_personal_details" || @ViewBag.permissions[j] == "edit_user_details")
+                            {
+                                <form asp-action="@ViewBag.permissions[j]" asp-controller="Services" method="post">
+                                    <input type="number" name="name" value="0" hidden/>
+                                    <input type="submit" value="@ViewBag.permissions[j].Replace("_", " ")" class="btn btn-outline-primary">
+                                </form>
+                            }
+                            else if (@ViewBag.permissions[j] == "edit_personal_details")
+                            {
+                                <form asp-action="@ViewBag.permissions[j]" asp-controller="Services" method="post">
+                                    <input type="number" name="id" value="@ViewBag.id" hidden />
+                                    <input type="submit" value="@ViewBag.permissions[j].Replace("_", " ")" class="btn btn-outline-primary">
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="@ViewBag.permissions[j]" asp-controller="Services" method="post">
+                                    <input type="submit" value="@ViewBag.permissions[j].Replace("_", " ")" class="btn btn-outline-primary">
+                                </form>
+                            }
+                        }
+                    </div>
+                    <br />
+
+                    <br />
+
+                    <br />
+                }
+            }
+        </div>
+    }
+</div>
+

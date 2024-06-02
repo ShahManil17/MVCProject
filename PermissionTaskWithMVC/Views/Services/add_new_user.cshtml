@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "add_new_user";
+}
+
+<body onload="fillData()">
+    <h1 style="color:blueviolet" class="text-center">Add New User</h1><br /><br />
+
+    <form>
+        <div class="row">
+            <div class="col">
+                <select name="role" id="role" class="form-control">
+                    <option value="value" selected disabled>-Select Role-</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="permissions" id="permissions" class="form-control" multiple>
+                </select>
+            </div>
+            <div class="col">
+                <input type="password" name="password" id="password" class="form-control"/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col"></div>
+            <div class="col" style="text-align:center">
+                <input type="button" value="ADD" onclick="addData()" class="btn btn-outline-primary form-control" />
+            </div>
+            <div class="col"></div>
+        </div>
+    </form>
+</body>
+<script>
+    async function fillData() {
+        const data = await (await fetch("https://localhost:7110/getRolePermissions")).json();
+        const roleEle = document.getElementById("role");
+        for (let i = 0; i < data.roles.length; i++) {
+            roleEle.innerHTML += `<option value="${data.roles[i]}">${data.roles[i]}</option>`;
+        }
+
+        for (let i = 0; i < data.permissions.length; i++) {
+            permissions.innerHTML += `<option value="${data.permissions[i]}">${data.permissions[i].replaceAll('_',' ')}</option>`;
+        }
+    }
+
+    async function addData() {
+
+        let ele = document.getElementById("permissions");
+        let arr = [];
+        let i = 0;
+        while(i<ele.length) {
+            if(ele[i].selected == true) {
+                arr.push(ele[i].value);
+            }
+            i++;
+        }
+
+        const response = fetch("https://localhost:7110/api/User?role="+document.getElementById("role").value+"&password="+document.getElementById("password").value, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(arr)
+        });
+        alert("Data Inserted Successfully!");
+        window.location.href = window.location.origin;
+    }
+</script>

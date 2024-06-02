@@ -1,0 +1,6 @@
+@CURDAPI_HostAddress = http://localhost:5152
+
+GET {{CURDAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
