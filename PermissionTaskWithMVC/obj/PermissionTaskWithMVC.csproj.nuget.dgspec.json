@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DOTNET\\PermissionTaskWithMVC\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj": {}
+    "C:\\Manil Shah\\Work\\MVCProject\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj": {}
   },
   "projects": {
-    "D:\\DOTNET\\PermissionTaskWithMVC\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj": {
+    "C:\\Manil Shah\\Work\\MVCProject\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DOTNET\\PermissionTaskWithMVC\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj",
+        "projectUniqueName": "C:\\Manil Shah\\Work\\MVCProject\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj",
         "projectName": "PermissionTaskWithMVC",
-        "projectPath": "D:\\DOTNET\\PermissionTaskWithMVC\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\DOTNET\\PermissionTaskWithMVC\\PermissionTaskWithMVC\\obj\\",
+        "projectPath": "C:\\Manil Shah\\Work\\MVCProject\\PermissionTaskWithMVC\\PermissionTaskWithMVC.csproj",
+        "packagesPath": "C:\\Users\\Manil Shah\\.nuget\\packages\\",
+        "outputPath": "C:\\Manil Shah\\Work\\MVCProject\\PermissionTaskWithMVC\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Manil Shah\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -53,6 +58,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[111.2.0, )"
+            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.6, )"
@@ -77,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

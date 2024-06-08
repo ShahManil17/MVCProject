@@ -1,0 +1,160 @@
+﻿@using PermissionTaskWithMVC.Controllers;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PermissionTaskWithMVC</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PermissionTaskWithMVC.styles.css" asp-append-version="true" />
+    
+    <link rel="stylesheet" href="~/css/sidebar.css" />
+
+    <style>
+        li:hover {
+            border-radius:10px;
+            background-color: rgb(224, 224, 224);
+        }
+    </style>
+
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light text-center" onclick="redirect()">CRUD</div>
+            <div class="list-group list-group-flush">
+                @{
+                    <ul style="list-style-type:none;" class="text-center ps-0 pt-5">
+                        @{
+                        int i = 0;
+                        for (int j = i * 3; j < j + 3 && j < LoginController.permissions.Count; j++)
+                        {
+                            <li style="margin-bottom: -75px; font-size: 20px; padding: 20px">
+                                @{
+                            if (@LoginController.permissions[j] == "list_personal_details" || @LoginController.permissions[j] == "edit_user_details")
+                            {
+                                <form asp-action="@LoginController.permissions[j]" asp-controller="Services" method="post">
+                                    <input type="number" name="name" value="0" hidden />
+                                    <input type="submit" value="@LoginController.permissions[j].Replace("_", " ")" style="border:none; background:none">
+                                </form>
+                            }
+                            else if (@LoginController.permissions[j] == "edit_personal_details" || @LoginController.permissions[j] == "display_personal_details")
+                            {
+                                <form asp-action="@LoginController.permissions[j]" asp-controller="Services" method="post">
+                                    <input type="number" name="id" value="@LoginController.id" hidden />
+                                    <input type="submit" value="@LoginController.permissions[j].Replace("_", " ")" style="border:none; background:none">
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="@LoginController.permissions[j]" asp-controller="Services" method="post">
+                                    <input type="submit" value="@LoginController.permissions[j].Replace("_", " ")" style="border:none; background:none">
+                                </form>
+                            }
+                                }
+                            </li>
+                            <br />
+
+                            <br />
+
+                            <br />
+                        }
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <li class="nav-item active"><a class="nav-link" href="/Login">Home</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Page content-->
+            <div class="container-fluid">
+                <br />
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+
+    <script>
+        function redirect() {
+            window.location.href = window.location.origin
+        }
+    </script>
+
+</body>
+</html>
+
+
+@* <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PermissionTaskWithMVC</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PermissionTaskWithMVC.styles.css" asp-append-version="true" />
+    <style>
+        li:hover {
+            background-color: rgb(221, 208, 200, 0.7);
+            border-radius: 10px
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PermissionTaskWithMVC</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="d-flex" style="height:655px">
+        <div style="width:15%; height:655px; overflow:auto; background-color:rgb(221, 208, 200, 0.5)" class="text-center">
+
+            
+        </div>
+        <main role="main" style="width:85%;">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container pt-3 ps-3" style="margin-bottom:-45PX;">
+            &copy; 2024 - PermissionTaskWithMVC - Manil Shah
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+ *@

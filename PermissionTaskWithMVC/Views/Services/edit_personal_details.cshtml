@@ -2,11 +2,12 @@
 
 @{
     ViewData["Title"] = "edit_personal_details";
+    Layout = "_SecondLayout";
 }
 <body onload="fillData()">
     <div class="container">
         <h1 style="color:blueviolet" class="text-center">Edit Personal Details</h1>
-
+        <br />
         <form>
             <div class="row">
                 <div class="col">
@@ -74,6 +75,15 @@
     async function fillData() {
         let response = await fetch("https://localhost:7110/api/User/" + @ViewBag.id);
         let data = await response.json();
+        
+        // let tempData = ``;
+        // await $.get({
+        //     url: "https://localhost:7110/api/User/" + @ViewBag.ids,
+        // }).done(function (api_data) {
+        //     tempData = api_data;
+        // });
+        // alert(tempData.title);
+
         document.getElementById("name").value = data.first_name;
         document.getElementById("surname").value = data.last_name;
         document.getElementById("age").value = data.age;
@@ -90,7 +100,7 @@
     }
 
     async function submitForm() {
-        let response = await fetch("https://localhost:7110/api/User/" + document.getElementById("id").value + "?first_name=" + document.getElementById("name").value + "&last_name=" + document.getElementById("surname").value + "&age=" + document.getElementById("age").value + "&gender=" + document.getElementById("gender").value + "&phone_no=" + document.getElementById("no").value + "&email=" + document.getElementById("email").value + "&role=" + role_id + "&password=" + document.getElementById("pass").value, {
+        let response = await fetch("https://localhost:7110/api/User/" + document.getElementById("id").value + "?first_name=" + document.getElementById("name").value + "&last_name=" + document.getElementById("surname").value + "&age=" + document.getElementById("age").value + "&gender=" + document.getElementsByName("gender").value + "&phone_no=" + document.getElementById("no").value + "&email=" + document.getElementById("email").value + "&role=" + role_id + "&password=" + document.getElementById("pass").value, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -98,7 +108,7 @@
         });
         if (response.ok) {
             alert("Data Updated Successfully!");
-            window.location.href = window.location.origin;
+            window.location.href = window.location.origin + '/Login/showDashboard';
         }
         else {
             alert("OPPS, Something Went Wrong!");

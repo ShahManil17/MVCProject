@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CURDAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45935fb00cf46b11eb4ad4e99611263fd291f87b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69f8ea9ede89d0d166acd2077d7dcad8b02fdce6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CURDAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CURDAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

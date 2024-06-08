@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Helpers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,7 +17,7 @@ namespace CURDAPI.Controllers
 
         public UserController()
         {
-            string cs = "Data Source=DESKTOP-8D8TGL4\\SQLEXPRESS; Initial Catalog=permissionTask; Integrated Security=true";
+            string cs = "Data Source=DESKTOP-GU6T46F\\SQLEXPRESS; Initial Catalog=permissionTaskMvc; Integrated Security=true";
             conn = new SqlConnection(cs);
         }
 
@@ -216,6 +217,101 @@ namespace CURDAPI.Controllers
             }
         }
 
+        [HttpPut("assignPermission/{id}")]
+        public void assignPermission(int id, string[] permissions)
+        {
+            if (conn != null)
+            {
+                conn.Open();
+
+                try
+                {
+                    SqlCommand deletePermissions = new SqlCommand("DELETE FROM user_has_permissions WHERE user_id = @id", conn);
+                    deletePermissions.Parameters.AddWithValue("@id", id);
+                    int deleteresult = deletePermissions.ExecuteNonQuery();
+
+                    int[] permission_id = new int[permissions.Length];
+                    int ct = 0;
+                    foreach (var item in permissions)
+                    {
+                        SqlCommand getId = new SqlCommand("SELECT id FROM permissions WHERE name = @name", conn);
+                        getId.Parameters.AddWithValue("@name", item);
+                        int tempId = Convert.ToInt32(getId.ExecuteScalar());
+                        permission_id[ct] = tempId;
+                        ct++;
+                    }
+
+
+                    foreach (var item in permission_id)
+                    {
+                        SqlCommand insertPermissions = new SqlCommand("assignPermission", conn);
+                        insertPermissions.CommandType = CommandType.StoredProcedure;
+                        insertPermissions.Parameters.AddWithValue("@user_id", id);
+                        insertPermissions.Parameters.AddWithValue("@permission_id", item);
+
+                        insertPermissions.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch
+                {
+                    conn.Close();
+                }
+
+
+            }
+        }
+
+        [HttpPut("assignPermissionByRole/{name}")]
+        public void assignPermission(string name, string[] permissions)
+        {
+            if (conn != null) 
+            {
+                conn.Open();
+
+                try
+                {
+
+                    SqlCommand getRoleId = new SqlCommand("SELECT id FROM roles WHERE name = @name", conn);
+                    getRoleId.Parameters.AddWithValue("@name", name);
+                    int role_id = (int)getRoleId.ExecuteScalar();
+
+                    SqlCommand deletePermissions = new SqlCommand("DELETE FROM role_has_permissions WHERE role_id = @role_id", conn);
+                    deletePermissions.Parameters.AddWithValue("@role_id", role_id);
+                    int deleteresult = deletePermissions.ExecuteNonQuery();
+
+                    int[] permission_id = new int[permissions.Length];
+                    int ct = 0;
+                    foreach (var item in permissions)
+                    {
+                        SqlCommand getId = new SqlCommand("SELECT id FROM permissions WHERE name = @name", conn);
+                        getId.Parameters.AddWithValue("@name", item);
+                        int tempId = Convert.ToInt32(getId.ExecuteScalar());
+                        permission_id[ct] = tempId;
+                        ct++;
+                    }
+
+                    foreach (var item in permission_id)
+                    {
+                        SqlCommand insertPermissions = new SqlCommand("INSERT INTO role_has_permissions (role_id, permission_id) VALUES (@role_id, @permission_id)", conn);
+                        insertPermissions.Parameters.AddWithValue("@role_id", role_id);
+                        insertPermissions.Parameters.AddWithValue("@permission_id", item);
+
+                        insertPermissions.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch
+                {
+                    conn.Close();
+                }
+
+
+            }
+        }
+
         [HttpGet("/getRolePermissions")]
         public RolePermission GetRole()
         {
@@ -340,10 +436,69 @@ namespace CURDAPI.Controllers
             return obj;
         }
 
-        //// DELETE api/<UserController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpGet("getPass/{id}")]
+        public string getPass(int id)
+        {
+            if (conn != null)
+            {
+                conn.Open();
+                try
+                {
+                    SqlCommand getPass = new SqlCommand("SELECT password FROM users WHERE id = @id", conn);
+                    getPass.Parameters.AddWithValue("@id", id);
+
+                    string pass = Convert.ToString(getPass.ExecuteScalar());
+
+                    conn.Close();
+
+                    return pass;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return "";
+                }
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        [HttpGet("getPermissionByRole/{name}")]
+        public List<string> getPermissionByRole(string name)
+        {
+            List<string> permissionList = new List<string>();
+            if (conn != null)
+            {
+                conn.Open();
+                try
+                {
+                    string query = "SELECT perm.name FROM permissions AS perm INNER JOIN role_has_permissions AS rhp ON perm.id = rhp.permission_id INNER JOIN roles AS role ON rhp.role_id = role.id WHERE role.name = @name;";
+                    SqlCommand getPemission = new SqlCommand(query, conn);
+                    getPemission.Parameters.AddWithValue("@name", name);
+
+                    using (SqlDataReader rd = getPemission.ExecuteReader())
+                    {
+                        while(rd.Read())
+                        {
+                            permissionList.Add((string)rd["name"]);
+                        }
+                    }
+
+                    conn.Close();
+
+                    return permissionList;
+                }
+                catch (Exception e)
+                {
+                    return permissionList;
+                }
+            }
+            else
+            {
+                return permissionList;
+            }
+        }
     }
 }

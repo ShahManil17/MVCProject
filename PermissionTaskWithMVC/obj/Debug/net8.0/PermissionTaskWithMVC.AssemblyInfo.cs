@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PermissionTaskWithMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69f8ea9ede89d0d166acd2077d7dcad8b02fdce6")]
 [assembly: System.Reflection.AssemblyProductAttribute("PermissionTaskWithMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PermissionTaskWithMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,35 +1,38 @@
 ﻿
 @{
+    Layout = "_SecondLayout";
     ViewData["Title"] = "add_new_user";
 }
 
 <body onload="fillData()">
-    <h1 style="color:blueviolet" class="text-center">Add New User</h1><br /><br />
+    <div class="container">
+        <h1 style="color:blueviolet" class="text-center">Add New User</h1><br /><br />
 
-    <form>
-        <div class="row">
-            <div class="col">
-                <select name="role" id="role" class="form-control">
-                    <option value="value" selected disabled>-Select Role-</option>
-                </select>
+        <form>
+            <div class="row">
+                <div class="col">
+                    <select name="role" id="role" class="form-control">
+                        <option value="value" selected disabled>-Select Role-</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="permissions" id="permissions" class="form-control" multiple>
+                    </select>
+                </div>
+                <div class="col">
+                    <input type="password" name="password" id="password" class="form-control"/>
+                </div>
             </div>
-            <div class="col">
-                <select name="permissions" id="permissions" class="form-control" multiple>
-                </select>
+            <br />
+            <div class="row">
+                <div class="col"></div>
+                <div class="col" style="text-align:center">
+                    <input type="button" value="ADD" onclick="addData()" class="btn btn-outline-primary form-control" />
+                </div>
+                <div class="col"></div>
             </div>
-            <div class="col">
-                <input type="password" name="password" id="password" class="form-control"/>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col"></div>
-            <div class="col" style="text-align:center">
-                <input type="button" value="ADD" onclick="addData()" class="btn btn-outline-primary form-control" />
-            </div>
-            <div class="col"></div>
-        </div>
-    </form>
+        </form>
+    </div>
 </body>
 <script>
     async function fillData() {
@@ -64,6 +67,6 @@
             body: JSON.stringify(arr)
         });
         alert("Data Inserted Successfully!");
-        window.location.href = window.location.origin;
+        window.location.href = window.location.origin + '/Login/showDashboard';
     }
 </script>

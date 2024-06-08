@@ -1,7 +1,9 @@
 ﻿
 @{
     ViewData["Title"] = "assign_permissions";
+    Layout = "_SecondLayout";
 }
+
 <body>
     <div class="container">
         <h1 style="color:blueviolet" class="text-center">Assign Permissions</h1>
@@ -19,42 +21,182 @@
                 <div class="col"></div>
             </div>
             <br />
-            <div class="row" id="display" style="display:none"></div>
+            <div class="row" id="display"></div>
         </form>
     </div>
 </body>
 
 <script>
     async function getOptions() {
-        let option = document.getElementById("option").value;
-        if(option == 'role') {
-            await document.getElementById("display").innerHTML = `
-                <div class="row">
-                    <form>
-                    <div class="col">
-                        <select name="idView" id="idView"></select>
-                    </col>
-                    <div class="col">
-                        <select name="permissionView" id="permissionView"></select>
-                    </col>
-                    </form>
-                </div>
+        const option = document.getElementById("option").value;
+
+        let data = await (await fetch("https://localhost:7110/getRolePermissions")).json();
+        await renderOption(option);
+        
+        const idEle = document.getElementById("idView");
+        const roleEle = document.getElementById("roleView");
+        const permissionEle = document.getElementById("permissionView");
+
+        let str = ``;
+        str = ``;
+        for (let i = 0; i < data.permissions.length; i++) {
+            str += `<option name="permissionValue" value="${data.permissions[i]}">${data.permissions[i]}</option>`
+        }
+        permissionEle.innerHTML = str;
+
+
+        if (option == 'role') {
+            str = `<option selected disabled>-Select Role-</option>`;
+            for (let i=0; i<data.roles.length; i++) {
+                str += `<option value="${data.roles[i]}">${data.roles[i]}</option>`;
+            }
+            roleEle.innerHTML = str;
+        }
+        else {
+            str = `<option selected disabled>-Select User Id-</option>`;
+            for (let i = 0; i < data.ids.length; i++) {
+                str += `<option value="${data.ids[i]}">${data.ids[i]}</option>`;
+            }
+            idEle.innerHTML = str;
+        }
+    }
+
+    function renderOption(option) {
+        const displayEle = document.getElementById("display");
+        if (option == 'user') {
+            displayEle.innerHTML = `
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <select name="idView" id="idView" onchange="selectIdPermission()" class="form-control"></select>
+                        </div>
+                        <div class="col">
+                                    <select name="permissionView" id="permissionView" class="form-control" multiple></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col text-center">
+                                <input type="button" value="SUBMIT" onclick="change()" class="btn btn-outline-primary"/>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                </form>
             `;
         }
         else {
-            await document.getElementById("display").innerHTML = `
-                <div class="row">
-                    <form>
-                    <div class="col">
-                        <select name="roleView" id="roleView"></select>
-                    </col>
-                    <div class="col">
-                        <select name="permissionView" id="permissionView"></select>
-                    </col>
-                    </form>
-                </div>
+            displayEle.innerHTML = `
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <select name="roleView" id="roleView" onchange="selectRolePermission()" class="form-control"></select>
+                        </div>
+                        <div class="col">
+                                <select name="permissionView" id="permissionView" class="form-control" .dropdown-menu multiple></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col text-center">
+                            <input type="button" value="SUBMIT" onclick="change()" class="btn btn-outline-primary"/>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                </form>
             `;
         }
+    }
+
+    async function selectIdPermission() {
+        const data = await (await fetch("https://localhost:7110/getRolePermissions/" + document.getElementById("idView").value)).json();
+        const roleData = await (await fetch(`https://localhost:7110/api/User/getPermissionByRole/${data.roles[0]}`)).json();
+
+        const permissionsEle = document.getElementById("permissionView").children;
+
+        for (let i = 0; i < permissionsEle.length; i++) {
+            permissionsEle[i].selected = false;
+            permissionsEle[i].disabled = false;
+        }
+
+        for (let i = 0; i < permissionsEle.length; i++) {
+            for (let j = 0; j < data.permissions.length; j++ ) {
+                if(permissionsEle[i].value == data.permissions[j]) {
+                    permissionsEle[i].selected = true;
+                }
+            }
+            for (let j = 0; j < roleData.length; j++ ) {
+                if (permissionsEle[i].value == roleData[j]) {
+                    permissionsEle[i].disabled = true;
+                }
+            }
+        }
+    }
+
+    async function selectRolePermission() {
+        const roleData = await (await fetch(`https://localhost:7110/api/User/getPermissionByRole/${document.getElementById("roleView").value}`)).json();
         
+        const permissionsEle = document.getElementById("permissionView").children;
+
+        for (let i = 0; i < permissionsEle.length; i++) {
+            permissionsEle[i].selected = false;
+        }
+        
+        for (let i = 0; i < permissionsEle.length; i++) {
+            for (let j = 0; j < roleData.length; j++) {
+                if (permissionsEle[i].value == roleData[j]) {
+                    permissionsEle[i].selected = true;
+                }
+            }
+        }
+    }
+
+    async function change() {
+        const view = document.getElementById("display").children[0].children[0].children[0].name;
+        const ele = document.getElementById("permissionView");
+        
+        if (view == 'roleView') {
+            let arr = [];
+            let i = 0;
+            while (i < ele.length) {
+                if (ele[i].selected == true) {
+                    arr.push(ele[i].value);
+                }
+                i++;
+            }
+
+            const response = fetch("https://localhost:7110/api/User/assignPermissionByRole/" + document.getElementById("roleView").value, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(arr)
+            });
+            alert("Data Updated Successfully!");
+
+            window.location.href = window.location.origin;
+
+        }
+        else {
+            let arr = [];
+            let i = 0;
+            while (i < ele.length) {
+                if (ele[i].selected == true) {
+                    arr.push(ele[i].value);
+                }
+                i++;
+            }
+
+            const response = fetch("https://localhost:7110/api/User/assignPermission/" + document.getElementById("idView").value, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(arr)
+            });
+
+            alert("Data Updated Successfully!");
+
+            window.location.href = window.location.origin;
+        }
     }
 </script>

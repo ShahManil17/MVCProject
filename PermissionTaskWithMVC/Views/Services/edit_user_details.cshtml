@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "edit_user_details";
+    Layout = "_SecondLayout";
 }
 <body onload="fillData()">
 <div class="container">
@@ -116,7 +117,7 @@
     }
 
     async function submitForm() {
-        let response = await fetch("https://localhost:7110/api/User/" + document.getElementById("id").value + "?first_name=" + document.getElementById("name").value + "&last_name=" + document.getElementById("surname").value + "&age=" + document.getElementById("age").value + "&gender=" + document.getElementById("gender").value + "&phone_no=" + document.getElementById("no").value + "&email=" + document.getElementById("email").value + "&role=" + document.getElementById("role").value + "&password=" + document.getElementById("pass").value, {
+        let response = await fetch("https://localhost:7110/api/User/" + document.getElementById("id").value + "?first_name=" + document.getElementById("name").value + "&last_name=" + document.getElementById("surname").value + "&age=" + document.getElementById("age").value + "&gender=" + document.getElementsByName("gender").value + "&phone_no=" + document.getElementById("no").value + "&email=" + document.getElementById("email").value + "&role=" + document.getElementById("role").value + "&password=" + document.getElementById("pass").value, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -124,10 +125,16 @@
         });
         if(response.ok) {
             alert("Data Updated Successfully!");
+            window.location.href = window.location.origin + '/Login/showDashboard';
         }
         else {
             alert("OPPS, Something Went Wrong!");
         }
-        window.location.href = window.location.origin;
+        
     }
+
 </script>
+
+@{
+    var User = new UserViewModel();
+}

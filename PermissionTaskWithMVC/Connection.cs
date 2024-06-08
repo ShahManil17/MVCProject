@@ -6,7 +6,7 @@ namespace PermissionTaskWithMVC
     {
         public static SqlConnection getConnection() 
         {
-            var cs = "Data Source=DESKTOP-8D8TGL4\\SQLEXPRESS; Initial Catalog=permissionTask; Integrated Security=true";
+            var cs = "Data Source=DESKTOP-GU6T46F\\SQLEXPRESS; Initial Catalog=permissionTaskMvc; Integrated Security=true";
             var conn = new SqlConnection(cs);
             return conn;
         }

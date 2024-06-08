@@ -34,7 +34,6 @@ namespace PermissionTaskWithMVC.Controllers
         public IActionResult edit_user_details(int id)
         {
             ViewBag.id = id;
-            Console.WriteLine(id);
             return View();
         }
 
@@ -47,7 +46,7 @@ namespace PermissionTaskWithMVC.Controllers
         [HttpPost]
         public IActionResult list_personal_details(int id)
         {
-            if(id == 0)
+            if (id == 0)
             {
                 ViewBag.userList = null;
             }
@@ -59,7 +58,6 @@ namespace PermissionTaskWithMVC.Controllers
                 {
                     string data = response.Content.ReadAsStringAsync().Result;
                     var userList = JsonConvert.DeserializeObject<UserViewModel>(data);
-                    //var userList = JsonConvert.DeserializeObject<List<UserViewModel>>(data);
 
                     ViewBag.userList = userList;
                 }
@@ -67,13 +65,21 @@ namespace PermissionTaskWithMVC.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult display_personal_details(int id)
-        //{
-            
-            
-        //    return View("list_personal_details");
-        //}
+        [HttpPost]
+        public IActionResult display_personal_details(int id)
+        {
+            HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/User/" + id).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                var userList = JsonConvert.DeserializeObject<UserViewModel>(data);
+                Console.WriteLine(userList.id);
+                ViewBag.userList = userList;
+            }
+
+            return View(); 
+        }
 
         [HttpPost]
         public IActionResult assign_permissions()
@@ -85,12 +91,6 @@ namespace PermissionTaskWithMVC.Controllers
         public IActionResult edit_personal_details(int id)
         {
             ViewBag.id = id;
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult remove_permission()
-        {
             return View();
         }
     }
